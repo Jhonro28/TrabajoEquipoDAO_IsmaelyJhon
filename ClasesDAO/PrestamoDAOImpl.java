@@ -1,7 +1,6 @@
 package DAO;
 
 import Clases.Prestamo;
-import Clases.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,14 +12,14 @@ public class PrestamoDAOImpl implements PrestamoDAO {
     public void addPrestamo(Prestamo prestamo) throws Exception {
         String sql = "INSERT INTO prestamo (idUsuario, idLibro, fechaInicio, fechaFin) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, prestamo.getUsuario().getId());
-            stmt.setInt(2, prestamo.getLibro().getId());
-            stmt.setDate(3, Date.valueOf(prestamo.getFechaInicio()));
-            stmt.setDate(4, Date.valueOf(prestamo.getFechaFin()));
+            ps.setInt(1, prestamo.getUsuario().getId());
+            ps.setInt(2, prestamo.getLibro().getId());
+            ps.setDate(3, Date.valueOf(prestamo.getFechaInicio()));
+            ps.setDate(4, Date.valueOf(prestamo.getFechaFin()));
 
-            stmt.executeUpdate();
+            ps.executeUpdate();
         }
     }
 
@@ -30,8 +29,8 @@ public class PrestamoDAOImpl implements PrestamoDAO {
         String sql = "SELECT * FROM prestamo";
 
         try (Connection conn = ConnectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Prestamo p = new Prestamo();
@@ -46,16 +45,16 @@ public class PrestamoDAOImpl implements PrestamoDAO {
     }
 
     @Override
-    public void updateUsuario(Usuario usuario) throws Exception {
-        String sql = "UPDATE usuario SET nombre=? WHERE id=?";
+    public void updatePrestamo(Prestamo prestamo) throws Exception {
+        String sql = "UPDATE prestamo SET nombre=? WHERE id=?";
 
         try (Connection conn = ConnectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, usuario.getNombre());
-            stmt.setInt(2, usuario.getId());
+            ps.setString(1, prestamo.getUsuario().toString());
+            ps.setInt(2, prestamo.getId());
 
-            stmt.executeUpdate();
+            ps.executeUpdate();
         }
     }
 
